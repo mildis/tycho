@@ -116,8 +116,8 @@ public class TychoMavenLifecycleParticipant extends AbstractMavenLifecyclePartic
                     if (version == null) {
                         continue;
                     }
-                    log.debug(TYCHO_GROUPID + ":" + plugin.getArtifactId() + ":" + version + " configured in "
-                            + project);
+                    log.debug(
+                            TYCHO_GROUPID + ":" + plugin.getArtifactId() + ":" + version + " configured in " + project);
                     Set<MavenProject> projectSet = versionToProjectsMap.get(version);
                     if (projectSet == null) {
                         projectSet = new LinkedHashSet<>();
@@ -150,8 +150,8 @@ public class TychoMavenLifecycleParticipant extends AbstractMavenLifecyclePartic
         for (MavenProject project : projects) {
             File basedir = project.getBasedir();
             if (baseDirs.contains(basedir)) {
-                throw new MavenExecutionException("Multiple modules within the same basedir are not supported: "
-                        + basedir, project.getFile());
+                throw new MavenExecutionException(
+                        "Multiple modules within the same basedir are not supported: " + basedir, project.getFile());
             } else {
                 baseDirs.add(basedir);
             }
@@ -170,8 +170,9 @@ public class TychoMavenLifecycleParticipant extends AbstractMavenLifecyclePartic
     }
 
     private void configureComponents(MavenSession session) {
-        // TODO why does the bundle reader need to cache stuff in the local maven repository?
-        File localRepository = new File(session.getLocalRepository().getBasedir());
+        File localRepository = new File(
+                session.getUserProperties().getProperty("tycho.cache", session.getLocalRepository().getBasedir()));
+        log.debug("Using cache directory : " + localRepository);
         ((DefaultBundleReader) bundleReader).setLocationRepository(localRepository);
     }
 
